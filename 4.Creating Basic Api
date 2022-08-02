@@ -1,0 +1,27 @@
+
+//Reading file at the top so that we dont read it again and again everytime '\api' is called
+
+const data=fs.readFileSync('starter/dev-data/data.json','utf-8');
+const dataObj=JSON.parse(data);
+
+const server=http.createServer((req,res)=>{
+    const pathName=req.url;
+    if(pathName === '/' || pathName === '/overview'){
+        res.end('THIS IS OVERVIEW');
+    }
+    else if(pathName === '/product'){
+        res.end('Thid id product');
+    }
+    //NEWLY ADDED CODE BELOW
+    else if(pathName === '/api'){
+        res.writeHead(200,{'Content-type':'application-json'});
+        res.end(data);
+    }
+    else{
+        res.end('Page Not Found');
+    }
+});
+
+server.listen(8000,'127.0.0.1',()=>{
+    console.log('Listening to request on port 8000');
+})
